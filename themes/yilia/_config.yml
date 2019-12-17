@@ -7,9 +7,9 @@ menu:
 # SubNav
 subnav:
   github: "https://github.com/sunxingboo"
-  weibo: "#"
-  rss: "#"
+  #weibo: "#"
   zhihu: "#"
+  rss: /atom.xml
   #qq: "#"
   #weixin: "#"
   #jianshu: "#"
