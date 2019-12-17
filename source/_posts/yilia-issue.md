@@ -1,12 +1,14 @@
 ---
-title: hexo yilia 主题点击全部文章/关于我等左侧链接时打开空白页面问题 
+title: hexo yilia 主题点击左侧链接时打开空白页面问题 
 date: 2019-12-17 17:30
 tags: hexo
 ---
 
-<!-- more -->
+解决办法：修改 ```themes/yilia/layout/_partial/post/left-col.ejs``` 文件中 ```<nav class="header-smart-menu">```。
 
-解决办法：修改 themes/yilia/layout/_partial/post/left-col.ejs。搜索 header-smart-menu
+<!--more-->
+
+搜索 header-smart-menu
 
 ```js
 //修改前
