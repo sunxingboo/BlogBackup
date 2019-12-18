@@ -14,7 +14,7 @@ function init() {
 		$a.forEach(($em) => {
 			let target = $em.getAttribute('target');
 			if (!target || target === '') {
-				$em.setAttribute('target', '_blank');
+				$em.setAttribute('target', '_self');
 			}
 		})
 	}
