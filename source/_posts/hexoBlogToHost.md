@@ -29,6 +29,13 @@ server {
 }
 ```
 
+为登录账户创建 `authorized_keys`
+
+```bash
+$ vim ~/.ssh/authorized_keys
+#每行一个key
+```
+
 ## rsync 部署
 
 *推荐使用这种方式*
