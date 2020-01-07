@@ -1,5 +1,5 @@
 ---
-title: PHP ?? 与 ?: 操作符的区别
+title: PHP `??` 与 `?:` 操作符的区别
 date: 2020-01-07 
 tag: PHP
 ---
@@ -9,14 +9,16 @@ tag: PHP
 ```php
 <?php
   $str = "";
-	$arr = ["b" => 0, "c" => null];
-	$test1 = $str ?? "test1";
-	$test2 = $str ?: "test2";
-	$test3 = $arr["a"] ?? "test3";
-	$test4 = $arr["b"] ?? "test4";
-	$test5 = $arr["c"] ?? "test5";
-	var_dump($test1, $test2, $test3, $test4, $test5);
+  $arr = ["b" => 0, "c" => null];
+  $test1 = $str ?? "test1";
+  $test2 = $str ?: "test2";
+  $test3 = $arr["a"] ?? "test3";
+  $test4 = $arr["b"] ?? "test4";
+  $test5 = $arr["c"] ?? "test5";
+  var_dump($test1, $test2, $test3, $test4, $test5);
 ```
+
+<!--more-->
 
 ```
 string(0) ""
@@ -25,8 +27,6 @@ string(5) "test3"
 int(0)
 string(5) "test5"
 ```
-
-<!--more-->
 
 `??` 的判断形式相当于 `isset` 函数，即：
 
@@ -53,6 +53,7 @@ $test2 = !empty($str) ? $str : "test";
 - 空字符串 `""`
 - 整数 `0`
 - 浮点数 `0.0`
+- 字符串 `"0"`
 - `null`
 - `false`
 - 空数组 `[]`
