@@ -1,7 +1,7 @@
 ---
 title: set 命令及常用参数
 date: 2019-12-28
-tag: linux
+tag: Linux
 ---
 
 > **set命令**作用主要是显示系统中已经存在的shell变量，以及设置shell变量的新变量值。使用set更改shell特性时，符号"+"和"-"的作用分别是打开和关闭指定的模式。set命令不能够定义新的shell变量。如果要定义新的变量，可以使用[declare](http://man.linuxde.net/declare)命令以`变量名=值`的格式进行定义即可。
