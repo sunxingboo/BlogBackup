@@ -104,12 +104,12 @@ deploy:
   # - type: git
   #   repository: ssh://root@106.75.27.110:7777/data/GitLibrary/hexo.git
   #   branch: master
-  - type: rsync
-    host: 106.75.27.110
-    user: root
-    root: /data/www/hexo
-    port: 7777
-    delete: true
+  # - type: rsync
+  #   host: 106.75.27.110
+  #   user: root
+  #   root: /data/www/hexo
+  #   port: 7777
+  #   delete: true
 
 sitemap:
     path: sitemap.xml
