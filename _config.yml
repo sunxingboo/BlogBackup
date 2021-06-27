@@ -12,7 +12,7 @@ keywords: "后端,Linux,算法,数据结构,前端,js,jquery,javascript,html5,�
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: //codernote.top
+url: //sunxingboo.github.io
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
