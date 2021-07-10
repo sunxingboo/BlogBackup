@@ -1,5 +1,6 @@
 ---
 title: 右移一位和除2的区别
+permalink: move-bit
 date: 2021-06-25
 tags: [位运算]
 ---

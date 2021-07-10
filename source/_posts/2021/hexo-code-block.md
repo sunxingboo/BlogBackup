@@ -1,5 +1,6 @@
 ---
 title: 记录 hexo 生成代码块间隙过大的问题解决
+permalink: hero-code
 date: 2021-07-08
 tags: [hexo]
 ---

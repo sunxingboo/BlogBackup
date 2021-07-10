@@ -1,5 +1,6 @@
 ---
 title: 摩尔投票算法
+permalink: mole-vote
 date: 2021-07-06
 tag: [数据结构与算法]
 ---

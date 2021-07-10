@@ -1,5 +1,6 @@
 ---
 title: Markdown 常用数学公式代码
+permalink: markdown-math
 date: 2021-07-09
 tags: [markdown]
 ---
