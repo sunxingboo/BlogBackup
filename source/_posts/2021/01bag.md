@@ -148,9 +148,7 @@ func max(i, j int) int {
 }
 
 func zeroOneBag(bagWeight int, weights, values []int) int {
-	/**
-	 * 初始化
-	 */
+	//初始化
 	n := len(weights)
 	dp := make([][]int, n)
 	for i := 0; i < n; i++ {
@@ -163,9 +161,7 @@ func zeroOneBag(bagWeight int, weights, values []int) int {
 	}
 	fmt.Println(dp)
 
-  /**
-	 * 计算dp数组的其他位置
-	 */
+  //计算dp数组的其他位置
 	for i := 1; i < n; i++ {
 		for j := 1; j <= bagWeight; j++ {
 			if j < weights[i] {
