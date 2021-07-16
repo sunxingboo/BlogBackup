@@ -155,7 +155,7 @@ func lastStoneWeightII(stones []int) int {
 
 ## 目标和
 
-#### [leetcode 494](https://leetcode-cn.com/problems/target-sum/)
+[leetcode 494](https://leetcode-cn.com/problems/target-sum/)
 
 ### 问题描述
 
@@ -328,7 +328,7 @@ func findTargetSumWays(nums []int, target int) int {
 
 ## 一和零
 
-#### [leetcode 474](https://leetcode-cn.com/problems/ones-and-zeroes/)
+[leetcode 474](https://leetcode-cn.com/problems/ones-and-zeroes/)
 
 ### 问题描述
 
