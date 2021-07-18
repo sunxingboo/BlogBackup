@@ -12,9 +12,9 @@ tags: [数据结构与算法,动态规划,背包]
 ```go
 func max(i, j int) int {
     if i > j {
-		    return i
-	  }
-	  return j
+        return i
+	}
+	return j
 }
 ```
 
@@ -54,7 +54,7 @@ func max(i, j int) int {
 func canPartition(nums []int) bool {
   	//先判断数组和是否为偶数
     var sum int
-	  for _, v := range nums {
+	for _, v := range nums {
         sum += v
     }
     if sum % 2 != 0 {
@@ -62,15 +62,15 @@ func canPartition(nums []int) bool {
     }
 
   	//取数组和的一半作为背包容量
-	  target := sum / 2
-	  dp := make([]int, target + 1)
-	  for i := 0; i < len(nums); i++ {
-		    for j := target; j >= nums[i]; j-- {
-			      if j >= nums[i] {
-				        dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
-			      }
-		    }
-	  }
+	target := sum / 2
+	dp := make([]int, target + 1)
+	for i := 0; i < len(nums); i++ {
+        for j := target; j >= nums[i]; j-- {
+		    if j >= nums[i] {
+			    dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+			}
+		}
+	}
 
   	//当背包刚好装满时，数组可以拆分为元素和相等的两个子数组
     return dp[target] == target
@@ -349,7 +349,155 @@ func findTargetSumWays(nums []int, target int) int {
 
 ### 问题分析
 
+与前面三道题相比，本题的特征就更加不明显了，不太容易理解并转化为 $01$ 背包问题。
 
+$strs$ 就是物品列表，每一个字符串都是一个物品，它的价值就是 $1$，选了的话背包的总价值就 $+1$。但是物品对应的重量不再是一个单一的维度，而是它的内部包含的 $0$ 的个数和 $1$ 的个数两个维度。只要想通了这点，就把此问题转化成与前几道问题一样 $01$ 背包思想了。 
+
+类似物品的重量，本题背包的容量也同样变为两个维度。
+
+
+
+**$dp$ 数组定义**
+
+使用一个二维 $dp$ 数组。
+
+对于 $dp[i][j]$，$i$ 代表能选取物品中包含 $0$ 的最大数量，$j$ 代表能选取物品中包含 $1$ 的最大数量，$dp[i][j]$ 代表选取的物品中最多有 $i$ 个 $0$ ，$j$ 个 $1$ 的最大子集的大小。
+
+
+
+**递推公式**
+
+对于某个物品，假设它包含 $zeroNum$ 个 $0$， $oneNum$ 个 $1$。
+
+对于 $dp[i][j]$，它可以由以下两个公式推出：
+$$
+\begin{align*}
+&dp[i][j] = dp[i][j]\\&dp[i][j] = dp[i - zeroNum][j - oneNum] + 1
+\end{align*}
+$$
+因为当前物品包含的 $0$ 和 $1$ 的数量已经确定，那么 $dp[i - zeroNum][j - oneNum]$ 位置已经选取的子集大小也是确定，所以 $dp[i][j]$ 位置就是有足够的容量来选择当前物品的，所以最终结果只需在 $dp[i - zeroNum][j - oneNum]$ 的基础上 $+1$。
+
+还有一种情况，在之前遍历某个物品时，已经对通过 $dp[i][j]= dp[i - zeroNum][j - oneNum] + 1$ 设置了值。
+
+那么在遍历后续的物品时，对于此时的 $i$ 和 $j$ 对应的 $dp[i][j]$ 就可能出现一种情况：
+$$
+dp[i][j] \geq dp[i - zeroNum][j - oneNum] + 1
+$$
+所以最终需要对这两种情况取最大值，与前几题也是十分类似的，但是细节不一样，需要好好理解。
+
+所以最终的递推公式就是：
+$$
+dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)
+$$
+
+
+**遍历方式**
+
+与前几题一样，同样，先遍历物品，然后先计算出物品包含的 $0$ 和 $1$ 的数量。
+
+然后遍历背包的容量（在这道题里就变为了 $m$ 和 $n$ 两个维度）。
+
+因为本题的二维 $dp$ 数组不再是**物品**和**背包重量**构成的二维数组（回顾 $dp$ 数组定义）而是由物品的**两个维度**构成的。
+
+那么也就是说本题 $dp$ 数组的推导过程不再是一行一行进行的
+
+
+
+**举例推导**
+
+以示例参数为例，推导过程如下：
+$$
+初始值 \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&0&0&0\\
+  \hline 包含1个0&0&0&0&0\\
+  \hline 包含2个0&0&0&0&0\\
+  \hline 包含3个0&0&0&0&0\\
+  \hline 包含4个0&0&0&0&0\\
+  \hline 包含5个0&0&0&0&0\\
+  \hline
+\end{array}
+$$
+遍历到物品 $0$，也就是 $10$，它包含 $1$ 个 $0$ 和 $1$ 个 $1$
+
+根据限制条件，遍历范围为 $dp[5][3]$ ~ $dp[1][1]$，对应位置变化如下：
+$$
+strs[0] \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&0&0&0\\
+  \hline 包含1个0&0&1&1&1\\
+  \hline 包含2个0&0&1&1&1\\
+  \hline 包含3个0&0&1&1&1\\
+  \hline 包含4个0&0&1&1&1\\
+  \hline 包含5个0&0&1&1&1\\
+  \hline
+\end{array}
+$$
+遍历到物品 $1$，也就是 $0001$，它包含 $3$ 个 $0$ 和 $1$ 个 $1$
+
+根据限制条件，遍历范围为 $dp[5][3]$ ~ $dp[3][1]$，以 $dp[5][3]$ 为例，取递推公式中两种情况的最大值：
+$$
+\begin{align*}
+	dp[5][3] &= max(dp[5][3], dp[5 - 3][3 - 1] + 1)\\
+	         &= max(1, dp[2][2])\\
+	         &= max(1, 1 + 1)\\
+	         &= max(1, 2)\\
+	         &= 2\\
+\end{align*}
+$$
+其他步骤中同理，不再赘述，仅列出总体变化过程。
+$$
+strs[1] \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&0&0&0\\
+  \hline 包含1个0&0&1&1&1\\
+  \hline 包含2个0&0&1&1&1\\
+  \hline 包含3个0&0&1&1&1\\
+  \hline 包含4个0&0&1&2&2\\
+  \hline 包含5个0&0&1&2&2\\
+  \hline
+\end{array}
+$$
+遍历到物品 $2$，也就是 $111001$，它包含 $2$ 个 $0$ 和 $4$ 个 $1$：
+$$
+strs[2] \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&0&0&0\\
+  \hline 包含1个0&0&1&1&1\\
+  \hline 包含2个0&0&1&1&1\\
+  \hline 包含3个0&0&1&1&1\\
+  \hline 包含4个0&0&1&2&2\\
+  \hline 包含5个0&0&1&2&2\\
+  \hline
+\end{array}
+$$
+遍历到物品 $3$，也就是 $1$，它包含 $0$ 个 $0$ 和 $1$ 个 $1$：
+$$
+strs[3] \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&1&1&1\\
+  \hline 包含1个0&0&1&2&2\\
+  \hline 包含2个0&0&1&2&2\\
+  \hline 包含3个0&0&1&2&2\\
+  \hline 包含4个0&0&1&2&3\\
+  \hline 包含5个0&0&1&2&3\\
+  \hline
+\end{array}
+$$
+遍历到物品 $4$，也就是 $0$，它包含 $1$ 个 $0$ 和 $0$ 个 $1$：
+$$
+strs[4] \qquad \begin{array}{|c|c|c|c|c|}
+  \hline        &包含0个1&包含1个1&包含2个1&包含3个1\\
+  \hline 包含0个0&0&1&1&1\\
+  \hline 包含1个0&1&2&2&2\\
+  \hline 包含2个0&1&2&3&3\\
+  \hline 包含3个0&1&2&3&3\\
+  \hline 包含4个0&1&2&3&3\\
+  \hline 包含5个0&1&2&3&4\\
+  \hline
+\end{array}
+$$
+最终 $dp[m][n]$ 就是要题目要求的答案。
 
 ### golang代码实现
 
@@ -359,8 +507,10 @@ func findMaxForm(strs []string, m, n int) int {
 	  for i, _ := range dp {
 		    dp[i] = make([]int, n + 1)
 	  }
-    //遍历物品
+    
+      //外层循环遍历物品
 	  for _, str := range strs { 
+            //计算当前遍历到的物品包含的 0 和 1 的数量
 		    var zeroNum, oneNum int
 		    for i := 0; i < len(str); i++ {
 			      if str[i] == '0' {
@@ -370,6 +520,10 @@ func findMaxForm(strs []string, m, n int) int {
 			      }
 		    }
 
+            //这里的两层循环相当于前几题的一层内循环，因为本题的物品重量有 m 和 n 两个维度
+            //而本题的 dp 数组就是由这两个维度构成的
+          	//对于每一个物品，都会根据它含有的 0 和 1 的数量去遍历 dp 数组的多行
+            //对于 dp[i][j]，在遍历到某个物品时，当前位置可能已经在遍历前几个物品时被设置过了值，此时就需要取一下两种方式的最大值
 		    for i := m; i >= zeroNum; i-- {
 			      for j := n; j >= oneNum; j-- {
 				        dp[i][j] = max(dp[i][j], dp[i-zeroNum][j-oneNum]+1)
