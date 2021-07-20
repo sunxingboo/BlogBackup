@@ -1,6 +1,6 @@
 ---
 title: 01背包
-permalink: 01bag
+permalink: 01pack
 date: 2021-07-12
 tags: [数据结构与算法,动态规划,背包]
 ---
@@ -13,7 +13,7 @@ tags: [数据结构与算法,动态规划,背包]
 
 ## 问题描述
 
-一个背包，它最大能收纳的重量为 $bagWeight$。
+一个背包，它最大能收纳的重量为 $packWeight$。
 
 一组物品，每个物品只有一个，第 $i$ 个物品的重量为 $weights[i]$，它的价值为 $values[i]$。
 
@@ -21,7 +21,7 @@ tags: [数据结构与算法,动态规划,背包]
 $$
 示例\ \ \
 \begin{array}{|c|c|c|c|}
-	\hline bagWeight&4\\
+	\hline packWeight&4\\
 	\hline weights&1&3&4\\
 	\hline values&15&20&30\\
 	\hline
@@ -99,7 +99,7 @@ $$
 *所以遍历第 $1$ 行，判断背包容量是否满足第一个物品，初始化对应的值。*
 
 ```go
-for i := 1; i <= bagWeight; i++ {
+for i := 1; i <= packWeight; i++ {
 		if i >= weights[0] {
 			dp[0][i] = values[0]
 		}
@@ -131,7 +131,7 @@ $$
 那么这样初始化是否可以呢？
 
 ```go
-for j := 1; j <= bagWeight; j++ {
+for j := 1; j <= packWeight; j++ {
     dp[0][j] = max(dp[0][j], dp[0][j - weights[0]] + values[0])
 }
 ```
@@ -168,7 +168,7 @@ $$
 这是由于递推公式依赖当前位置同行的前面某个位置的值，这就导致了重复。那么可以逆序遍历，这样遍历到当前位置时，它的前面的位置都还没有初始化，就不会导致重复了。
 
 ```go
-for j := bagWeight; j >= 1; j-- {
+for j := packWeight; j >= 1; j-- {
     dp[0][j] = max(dp[0][j], dp[0][j - weights[0]] + values[0])
 }
 ```
@@ -200,39 +200,39 @@ var weights = []int{1, 3, 4}
 var values = []int{15, 20, 30}
 
 func max(i, j int) int {
-	if i > j {
-		return i
-	}
-	return j
+	  if i > j {
+		    return i
+	  }
+	  return j
 }
 
-func zeroOneBag(bagWeight int, weights, values []int) int {
+func zeroOnePack(packWeight int, weights, values []int) int {
 	//初始化
 	n := len(weights)
 	dp := make([][]int, n)
 	for i := 0; i < n; i++ {
-		dp[i] = make([]int, bagWeight + 1)
+		  dp[i] = make([]int, packWeight + 1)
 	}
-	for i := 1; i <= bagWeight; i++ {
-		if i >= weights[0] {
-			dp[0][i] = values[0]
-		}
+	for i := 1; i <= packWeight; i++ {
+		  if i >= weights[0] {
+			    dp[0][i] = values[0]
+		  }
 	}
 	fmt.Println(dp)
 
   //计算dp数组的其他位置
 	for i := 1; i < n; i++ {
-		for j := 1; j <= bagWeight; j++ {
-			if j < weights[i] {
-				dp[i][j] = dp[i - 1][j]
-			} else {
-				dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i])
-			}
-		}
+		  for j := 1; j <= packWeight; j++ {
+			    if j < weights[i] {
+				      dp[i][j] = dp[i - 1][j]
+			    } else {
+				      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i])
+			    }
+		  }
 	}
 	fmt.Println(dp)
   
-	return dp[n - 1][bagWeight]
+	return dp[n - 1][packWeight]
 }
 ```
 
@@ -241,12 +241,12 @@ func zeroOneBag(bagWeight int, weights, values []int) int {
 另一种遍历方式是，当 $j - weights[i]$ 小于 $0$ 时，不做处理。
 
 ```go
-for j := 1; j <= bagWeight; j++ {
-	for i := 1; i < n; i++ {
-		if j >= weights[i] {
-			dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i])
-		}
-	}
+for j := 1; j <= packWeight; j++ {
+	  for i := 1; i < n; i++ {
+		    if j >= weights[i] {
+			      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i])
+		    }
+	  }
 }
 ```
 
@@ -305,11 +305,11 @@ $$
 **golang 代码实现**
 
 ```go
-func zeroOneBag(bagWeight int, weights, values []int) int {
+func zeroOnePack(packWeight int, weights, values []int) int {
 	//初始化
 	n := len(weights)
-	dp := make([]int, bagWeight + 1)
-	for i := 1; i <= bagWeight; i++ {
+	dp := make([]int, packWeight + 1)
+	for i := 1; i <= packWeight; i++ {
 		  if i >= weights[0] {
 			    dp[i] = values[0]
 		  }
@@ -318,7 +318,7 @@ func zeroOneBag(bagWeight int, weights, values []int) int {
 
 	//计算dp数组的其他位置
 	for i := 1; i < n; i++ {
-	    for j := 1; j <= bagWeight; j++ {
+	    for j := 1; j <= packWeight; j++ {
 			    if j >= weights[i] {
 				      dp[j] = max(dp[j], dp[j - weights[i]] + values[i])
 			    }
@@ -326,7 +326,7 @@ func zeroOneBag(bagWeight int, weights, values []int) int {
 	}
 	fmt.Println(dp)
 
-	return dp[bagWeight]
+	return dp[packWeight]
 }
 ```
 
@@ -427,24 +427,24 @@ $$
 **golang代码实现**
 
 ```golang 
-func zeroOneBag(bagWeight int, weights, values []int) int {
+func zeroOneBag(packWeight int, weights, values []int) int {
 	//初始化
 	n := len(weights)
-	dp := make([]int, bagWeight + 1)
-	for j := bagWeight; j >= weights[0]; j-- {
+	dp := make([]int, packWeight + 1)
+	for j := packWeight; j >= weights[0]; j-- {
     dp[j] = max(dp[j], dp[j - weights[0]] + values[0])
 	}
 	fmt.Println(dp)
 
 	//计算dp数组的其他位置
 	for i := 1; i < n; i++ {
-	    for j := bagWeight; j >= weights[i]; j-- {
+	    for j := packWeight; j >= weights[i]; j-- {
 			    dp[j] = max(dp[j], dp[j - weights[i]] + values[i])
 		  }
 	}
 	fmt.Println(dp)
 
-	return dp[bagWeight]
+	return dp[packWeight]
 }
 ```
 

@@ -1,6 +1,6 @@
 ---
 title: 几道01背包的应用题
-permalink: 01bag-application
+permalink: 01pack-application
 date: 2021-07-15
 tags: [数据结构与算法,动态规划,背包]
 ---
